@@ -18,7 +18,7 @@ inputs:
 
 runs:
   using: docker
-  # https://pkgs.alpinelinux.org/packages?name=ruby&branch=v3.20&arch=x86_64
+  # https://pkgs.alpinelinux.org/packages?name=ruby&branch=v3.22&arch=x86_64
   image: docker://voormedia/ruby-build:3.22
 
   env:

@@ -16,11 +16,6 @@ inputs:
     required: false
     default: bundle exec rails test --verbose
 
-  timeout:
-    description: Timeout for test execution in seconds (default 1800 = 30 minutes)
-    required: false
-    default: "1800"
-
 runs:
   using: docker
   # https://pkgs.alpinelinux.org/packages?name=ruby&branch=v3.22&arch=x86_64
@@ -50,15 +45,5 @@ runs:
     # Load db structure from SQL or Ruby file.
     - if [ -f "config/sequel.rb" ]; then bundle exec rails db:structure:load; else bundle exec rails db:schema:load; fi
 
-    # Show test files and configuration for debugging
-    - echo "=== Test files found ==="
-    - find test -name "*.rb" | head -20 || echo "No test directory found"
-    - echo "=== Rails test configuration ==="
-    - bundle exec rails test --help | head -20 || echo "Could not get test help"
-    - echo "=== Starting tests with command: ${{ inputs.command }} ==="
-    - echo "=== Test environment check ==="
-    - bundle exec rails runner "puts 'Rails app loaded successfully'"
-
-    # Run tests with timeout and additional debugging
-    - echo "=== About to run tests ==="
-    - timeout ${{ inputs.timeout }} bash -c "echo 'Test command starting...' && ${{ inputs.command }}"
+    # Run tests.
+    - ${{ inputs.command }}

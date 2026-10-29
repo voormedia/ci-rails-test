@@ -16,6 +16,11 @@ inputs:
     required: false
     default: bundle exec rails test
 
+  rubocop:
+    description: Run rubocop when .rubocop.yml is present. Set to 'false' when rubocop runs in a separate job
+    required: false
+    default: 'true'
+
 runs:
   using: docker
   # https://pkgs.alpinelinux.org/packages?name=ruby&branch=v3.24&arch=x86_64
@@ -38,7 +43,7 @@ runs:
 
     # Run rubocop if configured.
     # TODO: Extract into separate action? If so, make sure we need to run bundle only once!
-    - if [ -f ".rubocop.yml" ]; then bundle exec rubocop; fi
+    - if [ "${{ inputs.rubocop }}" != "false" ] && [ -f ".rubocop.yml" ]; then bundle exec rubocop; fi
 
     # Create test database.
     - bundle exec rails db:create
